@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>AR Experience</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+    <script>
+        const targetCoords = { lat: 46.490110, lon: 11.329504 };
+
+        function checkLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+
+                    const threshold = 0.0005;
+                    if (Math.abs(userLat - targetCoords.lat) < threshold && Math.abs(userLon - targetCoords.lon) < threshold) {
+                        document.getElementById("ar-container").style.display = "block";
+                    } else {
+                        alert("Devi trovarti nella posizione giusta per vedere l'oggetto AR.");
+                    }
+                });
+            } else {
+                alert("Geolocalizzazione non supportata.");
+            }
+        }
+
+        window.onload = checkLocation;
+    </script>
+
+    <div id="ar-container" style="display: none;">
+        <a-scene embedded arjs>
+            <a-image src="https://lh5.googleusercontent.com/fk3-MLOdAbMfbUWqHQehT6LsMbjBIVeAJZhELRW9CICrpBO1e2fUg_PTKJjHqC7tcmMmP4we-9DQl-QFnac5cNvHxAdFs6dU4cPj8IstHNHcFQ2ixpqurdRSlCzmLNBW2A=w1280" position="0 0 -5"></a-image>
+        </a-scene>
+    </div>
+</body>
+</html>
